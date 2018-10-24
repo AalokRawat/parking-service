@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>ParkingService: you want it, we do it</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+<h1 id="result"></h1>
+<h1>Form</h1>
+<p>Number: <input type="text" id="number"/></p>
+<p id="types">Type:
+    <input type="radio" value="TwoWheeler" name="type" id="TwoWheeler"/> TwoWheeler
+    <input type="radio" value="FourWheeler" name="type" id="FourWheeler"/> FourWheeler
+</p>
+<p>
+    <button onclick="parkin()" >IN</button>
+    <button onclick="parkout()" >OUT</button>
+</p>
+</body>
+</html>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script type = "text/javascript">
+    function parkin() {
+        var number=$('#number').val();
+        var type;
+        if($('#TwoWheeler').prop("checked"))
+            type="TwoWheeler";
+        else
+            type="FourWheeler";
+
+        var xhr = new XMLHttpRequest() ;
+
+        let url = `/parkService/in` ;
+
+        var params = JSON.stringify({ number: number, type: type });
+        xhr.open( "post", url , true) ;
+        xhr.setRequestHeader("Content-Type","application/json");
+
+        xhr.onload = function() {
+            let jsonstring = xhr.responseText ;
+
+            document.getElementById("result").innerHTML = jsonstring;
+        };
+
+        xhr.onerror = function() {
+        };
+
+        xhr.ontimeout = function() {
+        };
+
+        xhr.send(params) ; // async request
+    }
+
+    function parkout() {
+        var number=$('#number').val();
+        var type;
+        if($('#TwoWheeler').val())
+            type="TwoWheeler";
+        else
+            type="FourWheeler";
+
+        var xhr = new XMLHttpRequest() ;
+
+        let url = `/parkService/out` ;
+
+        var params = JSON.stringify({ number: number, type: type });
+        xhr.open( "post", url , true) ;
+        xhr.setRequestHeader("Content-Type","application/json");
+
+        xhr.onload = function() {
+            let jsonstring = xhr.responseText ;
+
+            document.getElementById("result").innerHTML = jsonstring;
+        };
+
+        xhr.onerror = function() {
+        };
+
+        xhr.ontimeout = function() {
+        };
+
+        xhr.send(params) ; // async request
+    }
+</script>
